@@ -1,4 +1,4 @@
-# Refonte du site Kasa 
+# Automatisez des tests pour une boutique en ligne
 ## À propos 
 Projet n°10 de la formation de Testeur de logiciel. Mise en place de tests automatiques avec Cypress
 # Table des matières 
