@@ -1,3 +1,5 @@
+const username = Cypress.env("username")
+const password = Cypress.env("password")
 describe('Login Page', () => {
     it('should navigate to login page and verify elements of login page', () => {
         cy.visit("/login")
@@ -10,8 +12,8 @@ describe('Login Page', () => {
 describe('Cart for connected user', () => {
     before( () => {
         cy.visit('/login')
-        cy.getBySel('login-input-username').type('so@so.com')
-        cy.getBySel('login-input-password').type('coucou')
+        cy.getBySel('login-input-username').type(username)
+        cy.getBySel('login-input-password').type(password)
         cy.getBySel('login-submit').click()
         cy.visit('/')
     })
