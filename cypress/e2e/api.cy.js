@@ -101,6 +101,23 @@ describe('Orders API', () => {
             })
         })
     })
+
+    it('should not add an out of stock product in the cart', () => {
+        cy.request({
+            method: "POST",
+            failOnStatusCode: false,
+            url: apiUrl + "/orders/add", 
+            headers: {
+                "Authorization" : "Bearer " + Cypress.env('token')
+            }, 
+            body: {
+                "product" : 3, 
+                "quantity" : 1, 
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(405)
+        })
+    })
 })
 
 describe('Products API', () => {
