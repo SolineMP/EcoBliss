@@ -149,16 +149,36 @@ describe('Products API', () => {
             }
         }).then((response) => {
             productId = response.body[Math.floor(Math.random() * response.body.length)].id;
+            cy.log(response.body)
+            cy.log(productId)
         })
     })
 
     it('should return details of a product by ID', () => {
-        // Vérifier que l'ID a été extrait avec succès
-        expect(productId).to.be.a("number")
-
+        expect(productId).to.be.a("number");
+    
         cy.request("http://localhost:8081/products/" + `${productId}`)
-            .its("status").should("eq", 200)
-    })
+            .then((response) => {
+                expect(response.status).to.equal(200);
+                expect(response.body).to.have.property("name");
+                expect(response.body).to.have.property("availableStock")
+                cy.visit('/products/'+ productId)
+                cy.contains(response.body.name)
+                cy.contains(response.body.availableStock)
+                cy.contains(response.body.skin)
+                cy.contains(response.body.aromas)
+                cy.contains(response.body.ingredients)
+                cy.contains(response.body.description)
+                const priceFromAPI = response.body.price.toString();
+                cy.contains(new RegExp(priceFromAPI.replace('.', '\\.') + '|' + priceFromAPI.replace('.', ',')));
+                cy.getBySel('detail-product-img').should('have.attr', 'src', response.body.picture)
+                // A revoir car varieties est dans la response mais elle n'apparaît jamais sur la fiche.
+                // cy.contains(response.body.varieties)
+            });
+    });
+    
+    
+
 })
 
 describe('Login API', () => {
@@ -227,6 +247,24 @@ describe('Reviews API', () => {
             }
         }).then((response) => {
             expect(response.status).to.be.eq(200)
+        })
+    })
+
+    it('should not adds a review with script', () => {
+        cy.request({
+            method: 'POST',
+            url: apiUrl + "/reviews", 
+            failOnStatusCode: true, 
+            headers: {
+                "Authorization" : "Bearer " + Cypress.env('token') 
+            },
+            body: {
+                "title": normalTitle,
+                "comment": "<script> alert('Test') </script> ",
+                "rating": normalRate,
+            }
+        }).then((response) => {
+            expect(response.status).to.be.eq(500)
         })
     })
 })

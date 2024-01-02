@@ -9,6 +9,10 @@ describe('Login and Logout', () => {
         cy.getBySel('login-submit').click()
         cy.getBySel('nav-link-cart').should('have.text', "Mon panier")
         cy.getBySel('nav-link-logout').should('exist')
+    })
+
+    it('should deconnect the user', () => {
+        cy.Connect()
         cy.getBySel('nav-link-logout').click()
         cy.getBySel('nav-link-logout').should('not.exist')
     })
