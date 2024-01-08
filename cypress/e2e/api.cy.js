@@ -19,13 +19,13 @@ describe('Orders API', () => {
                 expect(response.status).to.eq(200);
             })
     })
-    it('should returns 401 if the user is not connected', () => {
+    it('should returns 403 if the user is not connected', () => {
         cy.request({
             method: "GET",
             url: apiUrl + "/orders", 
             failOnStatusCode: false,
         }).then((response) => {
-            expect(response.status).to.eq(401)
+            expect(response.status).to.eq(403)
         })
     })
     it('should returns a list of products in the cart', () => {
@@ -59,7 +59,7 @@ describe('Orders API', () => {
 
         it('should adds the product in the cart', () => {
             cy.request({
-                method: 'PUT', 
+                method: 'POST', 
                 url: apiUrl + "/orders/add",
                 headers: {
                     "Authorization" : "Bearer " + Cypress.env('token')

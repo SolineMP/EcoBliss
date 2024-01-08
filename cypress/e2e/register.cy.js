@@ -170,6 +170,17 @@ describe('registration with invalid password', () => {
             expect(className).to.include('error');
         })
     })
+
+    it('shouldnt register if password and password confirmation arent the same', () => {
+        cy.visit('/register')
+        cy.getBySel('register-input-lastname').type(faker.person.lastName())
+        cy.getBySel('register-input-firstname').type(faker.person.firstName())
+        cy.getBySel('register-input-email').type(faker.internet.email())
+        cy.getBySel('register-input-password').type("tests")
+        cy.getBySel('register-input-password-confirm').type("testss")
+        cy.getBySel('register-submit').click()
+        cy.getBySel('register-errors').should('exist')
+    })
 })
 
 describe('registration without firstname', () => {

@@ -12,3 +12,6 @@ describe('display of products on home page', () => {
 })
 
 
+
+
+

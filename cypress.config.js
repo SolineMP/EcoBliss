@@ -1,7 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-
+  reporter: 'mochawesome',
   env: {
     apiUrl: 'http://localhost:8081',
     username: 'test2@test.fr',
